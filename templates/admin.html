@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DriveEase Admin Dashboard</title>
+  <style>
+    /* --- GLOBAL STYLES --- */
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('https://cdn.pixabay.com/photo/2017/03/27/13/41/car-2179220_1280.jpg') center/cover no-repeat fixed;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    /* --- OVERLAY EFFECT FOR READABILITY --- */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* --- HEADER --- */
+    h1 {
+      color: #fff;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 2.2em;
+      text-shadow: 0 0 15px #00b4d8, 0 0 25px #0096c7;
+    }
+
+    /* --- NAVIGATION --- */
+    .nav {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .nav a {
+      display: inline-block;
+      margin: 0 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      background: rgba(0, 180, 216, 0.2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+    }
+
+    .nav a:hover {
+      background: rgba(255, 186, 8, 0.8);
+      color: #000;
+      box-shadow: 0 0 12px #ffba08, 0 0 25px #ffba08;
+      transform: scale(1.05);
+    }
+
+    /* --- BUTTONS --- */
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-block;
+      color: white;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 6px rgba(255,255,255,0.2);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(255,255,255,0.6);
+    }
+
+    .add { background: #2ecc71; }
+    .edit { background: #f39c12; }
+    .delete { background: #e74c3c; }
+
+    /* --- ADD BUTTON WRAPPER --- */
+    .actions {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    /* --- TABLE --- */
+    table {
+      width: 90%;
+      margin: 0 auto 40px;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.9);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    th {
+      background: linear-gradient(135deg, #1c7293, #16324f);
+      color: white;
+      padding: 12px;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 15px rgba(255, 186, 8, 0.4);
+      transform: scale(1.01);
+    }
+
+    img {
+      border-radius: 6px;
+      height: 45px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    /* --- BUTTON CLICK LIGHT EFFECT --- */
+    button:active, .btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 25px #ffba08, 0 0 50px #ffba08;
+    }
+
+    /* --- RESPONSIVE DESIGN --- */
+    @media (max-width: 768px) {
+      table { width: 100%; font-size: 14px; }
+      th, td { padding: 8px; }
+      .nav a { margin: 5px; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚘 DriveEase Admin Dashboard</h1>
+
+  <div class="nav">
+    <a href="/">🏠 Home</a>
+    <a href="/gallery">🚗 Gallery</a>
+    <a href="/history">📜 Bookings</a>
+    <a href="/logout">🚪 Logout</a>
+  </div>
+
+  <div class="actions">
+    <a href="/admin/add" class="btn add">+ Add New Car</a>
+  </div>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Price/Day</th>
+      <th>Image</th>
+      <th>Actions</th>
+    </tr>
+
+    {% for car in cars %}
+    <tr>
+      <td>{{ car['id'] }}</td>
+      <td>{{ car['name'] }}</td>
+      <td>{{ car['car_type'] }}</td>
+      <td>₱{{ car['price_per_day'] }}</td>
+      <td>
+        {% if car['image_url'] %}
+          <img src="{{ car['image_url'] }}" alt="{{ car['name'] }}">
+        {% else %}
+          <span style="color:#888">No Image</span>
+        {% endif %}
+      </td>
+      <td>
+        <a href="/admin/edit/{{ car['id'] }}" class="btn edit">Edit</a>
+        <form action="/admin/delete/{{ car['id'] }}" method="post" style="display:inline" onsubmit="return confirm('Delete this car?');">
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</body>
+</html>

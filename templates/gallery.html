@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DriveEase Car Rental - Gallery</title>
+  <style>
+    /* -------------------- Global Styles -------------------- */
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: url('/static/images/car_bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      color: #222;
+    }
+
+    /* Add a subtle overlay on top of background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: -1;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0d47a1, #1976d2);
+      color: white;
+      padding: 22px 0;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+
+    nav {
+      text-align: center;
+      background: rgba(22, 50, 79, 0.95);
+      padding: 14px 0;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 18px;
+      font-weight: 600;
+      transition: color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+
+    nav a:hover {
+      color: #ffba08;
+      transform: scale(1.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      margin-top: 35px;
+      font-size: 36px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+      animation: fadeInDown 1s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* -------------------- Filter Box -------------------- */
+    .filter-box {
+      background: rgba(255, 255, 255, 0.9);
+      width: 80%;
+      margin: 25px auto;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      animation: fadeIn 1.2s ease;
+    }
+
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 180px;
+      transition: box-shadow 0.3s, transform 0.2s;
+      font-size: 15px;
+    }
+
+    input:focus {
+      box-shadow: 0 0 8px #1c7293;
+      transform: scale(1.02);
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #ffba08, #ffd54f);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #f1a500, #ffe082);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255,186,8,0.6);
+    }
+
+    /* -------------------- Car Grid -------------------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px 60px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .car-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    /* ✨ Lighting sweep */
+    .car-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+      transform: skewX(-25deg);
+      transition: left 0.7s ease;
+    }
+
+    .car-card:hover::after {
+      left: 130%;
+    }
+
+    .car-card:hover {
+      transform: scale(1.05) rotateX(5deg);
+      box-shadow: 0 10px 30px rgba(255, 186, 8, 0.4);
+    }
+
+    .car-card:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 20px 4px #ffba08 inset;
+    }
+
+    img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+
+    .car-card:hover img {
+      transform: scale(1.1);
+      filter: brightness(1.1) contrast(1.1);
+    }
+
+    .info {
+      padding: 15px;
+    }
+
+    .info h3 {
+      color: #1c7293;
+      margin-bottom: 5px;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .info p {
+      color: #333;
+      margin: 5px 0;
+      font-size: 15px;
+    }
+
+    a.button {
+      display: inline-block;
+      background: linear-gradient(90deg, #ffba08, #ffd54f);
+      color: #000;
+      padding: 10px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    a.button:hover {
+      background: linear-gradient(90deg, #ffc107, #ffe082);
+      box-shadow: 0 4px 20px rgba(255,186,8,0.7);
+      transform: scale(1.05);
+    }
+
+    a.button:active {
+      background: #fff59d;
+      transform: scale(0.95);
+      box-shadow: 0 0 15px #ffba08;
+    }
+
+    /* -------------------- No Cars Message -------------------- */
+    .no-cars {
+      text-align: center;
+      font-size: 20px;
+      color: white;
+      margin-top: 80px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+    }
+
+    /* -------------------- Footer -------------------- */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: rgba(28, 114, 147, 0.95);
+      color: white;
+      margin-top: 60px;
+      box-shadow: 0 -3px 15px rgba(0,0,0,0.5);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🏎️ DriveEase Car Rental</header>
+
+  <nav>
+    <a href="/">🏠 Home</a>
+    <a href="/history">📜 Booking History</a>
+    <a href="/logout">🚪 Logout</a>
+  </nav>
+
+  <h1>Available Cars</h1>
+
+  <!-- 🔍 Filter/Search Box -->
+  <form method="POST" class="filter-box">
+    <input type="text" name="search" placeholder="Search by name or type..." value="{{ search }}">
+    <input type="number" name="min_price" placeholder="Min ₱" value="{{ min_price }}">
+    <input type="number" name="max_price" placeholder="Max ₱" value="{{ max_price }}">
+    <button type="submit">Search</button>
+  </form>
+
+  {% if cars %}
+  <div class="grid">
+    {% for car in cars %}
+    <div class="car-card">
+      <img src="{{ car[4] }}" alt="{{ car[1] }}">
+      <div class="info">
+        <h3>{{ car[1] }}</h3>
+        <p>Type: {{ car[2] }}</p>
+        <p>₱{{ car[3] }} per day</p>
+        <a href="/book/{{ car[0] }}" class="button">Book Now</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="no-cars">No cars match your search criteria.</p>
+  {% endif %}
+
+  <footer>© 2025 DriveEase Car Rental. All rights reserved.</footer>
+</body>
+</html>
