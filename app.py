@@ -117,16 +117,15 @@ def logout():
     return redirect('/login')
 
 # ---------- USER SIDE ----------
-@app.route('/gallery')
+@app.route('/')
 def gallery():
-    if 'user_id' not in session:
-        return redirect('/login')
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM cars")
-    cars = cursor.fetchall()
-    conn.close()
+    cars = [
+        (1, "Toyota Vios", "Sedan", 1800, "vios.jpg"),
+        (2, "Honda CR-V", "SUV", 2500, "crv.jpg"),
+        (3, "Mitsubishi L300", "Van", 3000, "l300.jpg")
+    ]
     return render_template('gallery.html', cars=cars)
+
 
 @app.route('/book/<int:car_id>', methods=['GET', 'POST'])
 def book(car_id):

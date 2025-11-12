@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Car - DriveEase</title>
+    <title>Book Car - Drive</title>
     <style>
         /* 🌆 Global Styles */
         body {
@@ -206,7 +206,7 @@
 
     <div class="card">
         <h2>Book {{ car[1] }}</h2>
-        <img src="{{ car[4] }}" alt="{{ car[1] }}">
+        <img src="{{ url_for('static', filename='images/car_bg.jpg') }}">
         <p><strong>₱{{ car[3] }}</strong> per day</p>
 
         <form method="POST">
@@ -218,7 +218,7 @@
         <a href="/gallery">⬅ Back to Gallery</a>
     </div>
 
-    <footer>© 2025 DriveEase Car Rental. All rights reserved.</footer>
+    <footer>© 2025 Drive Car Rental. All rights reserved.</footer>
 
 </body>
 </html>

@@ -250,11 +250,36 @@
       font-size: 14px;
       letter-spacing: 0.5px;
     }
+
+      .image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-bottom: 3px solid #ffba08;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.4s ease;
+}
+
+.image-container:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+
   </style>
 </head>
 <body>
 
-  <header>🏎️ DriveEase Car Rental</header>
+  <header>🏎️ Drive Car Rental</header>
 
   <nav>
     <a href="/">🏠 Home</a>
@@ -263,33 +288,24 @@
   </nav>
 
   <h1>Available Cars</h1>
-
-  <!-- 🔍 Filter/Search Box -->
-  <form method="POST" class="filter-box">
-    <input type="text" name="search" placeholder="Search by name or type..." value="{{ search }}">
-    <input type="number" name="min_price" placeholder="Min ₱" value="{{ min_price }}">
-    <input type="number" name="max_price" placeholder="Max ₱" value="{{ max_price }}">
-    <button type="submit">Search</button>
-  </form>
-
-  {% if cars %}
+ {% if cars %}
   <div class="grid">
     {% for car in cars %}
-    <div class="car-card">
-      <img src="{{ car[4] }}" alt="{{ car[1] }}">
-      <div class="info">
-        <h3>{{ car[1] }}</h3>
-        <p>Type: {{ car[2] }}</p>
-        <p>₱{{ car[3] }} per day</p>
-        <a href="/book/{{ car[0] }}" class="button">Book Now</a>
+      <div class="car-card">
+          <img src="{{ url_for('static', filename='images/car_bg.jpg') }}">
+        <div class="info">
+          <h3>{{ car[1] }}</h3>
+          <p>Type: {{ car[2] }}</p>
+          <p>₱{{ car[3] }} per day</p>
+          <a href="/book/{{ car[0] }}" class="button">Book Now</a>
+        </div>
       </div>
-    </div>
     {% endfor %}
   </div>
-  {% else %}
-  <p class="no-cars">No cars match your search criteria.</p>
-  {% endif %}
+{% else %}
+  <p>No cars available.</p>
+{% endif %}
 
-  <footer>© 2025 DriveEase Car Rental. All rights reserved.</footer>
+  <footer>© 2025 Drive Car Rental. All rights reserved.</footer>
 </body>
 </html>
