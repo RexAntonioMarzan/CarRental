@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Login - DriveEase Car Rental</title>
   <style>
-    /* Background setup */
     body {
       margin: 0;
       padding: 0;
@@ -20,7 +19,6 @@
       align-items: center;
     }
 
-    /* Login Box */
     .login-box {
       background: rgba(20, 20, 20, 0.85);
       padding: 40px 35px;
@@ -63,7 +61,6 @@
       box-shadow: 0 0 10px #ffba08;
     }
 
-    /* Button styles */
     button {
       width: 100%;
       padding: 12px;
@@ -87,7 +84,6 @@
       transform: scale(0.98);
     }
 
-    /* Register link */
     p {
       color: #ccc;
       margin-top: 15px;
@@ -105,7 +101,6 @@
       color: #ffe066;
     }
 
-    /* Lighting pulse animation */
     @keyframes glowPulse {
       0% { box-shadow: 0 0 10px rgba(255, 186, 8, 0.3); }
       50% { box-shadow: 0 0 25px rgba(255, 186, 8, 0.8); }
@@ -126,8 +121,9 @@
       <input type="password" name="password" placeholder="Password" required><br>
       <button type="submit">Login</button>
     </form>
-    <p>Don’t have an account? <a href="/register">Register</a></p>
+    <p>Don’t have an account? <a href="{{ url_for('register') }}">Register</a></p>
   </div>
 
 </body>
 </html>
+

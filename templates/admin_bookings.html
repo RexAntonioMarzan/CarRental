@@ -1,0 +1,44 @@
+{% extends "admin_base.html" %}
+{% block admin_title %}All Bookings{% endblock %}
+
+{% block admin_content %}
+<section style="display: flex; flex-direction: column; gap: 24px;">
+  <div>
+    <h1>Bookings</h1>
+    <p>Review every reservation across the platform. Use this list to track demand and reconcile payments.</p>
+  </div>
+
+  {% if bookings %}
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Booking ID</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Car</th>
+            <th scope="col">Days</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+            <tr>
+              <td>#{{ booking['id'] }}</td>
+              <td>{{ booking['username'] }}</td>
+              <td>{{ booking['car_name'] }}</td>
+              <td>{{ booking['days'] }}</td>
+              <td>₱{{ '{:,.2f}'.format(booking['total_price']) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No bookings recorded</h2>
+      <p>Customer reservations will appear here as soon as they are confirmed.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+

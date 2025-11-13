@@ -1,188 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home - DriveEase Car Rental</title>
-    <style>
-        /* 🌐 Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0b1e33, #1c7293);
-            color: #fff;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+{% block content %}
+<style>
+  .home-hero {
+    position: relative;
+    min-height: 70vh;
+    padding: 64px 32px;
+    border-radius: 32px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(6, 20, 36, 0.85), rgba(15, 56, 83, 0.75));
+    backdrop-filter: blur(16px);
+    box-shadow: 0 30px 60px rgba(5, 14, 26, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    text-align: center;
+  }
 
-        /* 💡 Animated Light Effect Background */
-        body::before, body::after {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: moveLight 8s linear infinite;
-            pointer-events: none;
-        }
+  .home-hero::before,
+  .home-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 186, 8, 0.25), transparent 70%);
+    animation: pulseGlow 8s ease-in-out infinite;
+  }
 
-        body::after {
-            animation-delay: 4s;
-        }
+  .home-hero::before {
+    width: 560px;
+    height: 560px;
+    top: -220px;
+    right: -220px;
+  }
 
-        @keyframes moveLight {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+  .home-hero::after {
+    width: 420px;
+    height: 420px;
+    bottom: -180px;
+    left: -160px;
+    animation-delay: 3s;
+  }
 
-        /* 🚗 Floating Car Icon */
-        .car-icon {
-            font-size: 80px;
-            margin-bottom: 30px;
-            animation: floatCar 3s ease-in-out infinite, glowCar 2s ease-in-out infinite alternate;
-            filter: drop-shadow(0 0 10px #00bfff);
-        }
+  @keyframes pulseGlow {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.12);
+      opacity: 0.85;
+    }
+  }
 
-        @keyframes floatCar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+  .hero-icon {
+    width: 110px;
+    height: 64px;
+    filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.35));
+    animation: floatCar 3.6s ease-in-out infinite;
+  }
 
-        @keyframes glowCar {
-            from { filter: drop-shadow(0 0 10px #00bfff); }
-            to { filter: drop-shadow(0 0 25px #00ffff); }
-        }
+  @keyframes floatCar {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
 
-        /* 🏷️ Header and Text Animation */
-        h1 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-            animation: fadeInDown 1s ease-out;
-        }
+  .hero-title {
+    font-size: clamp(36px, 6vw, 48px);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            color: #d8e3e7;
-            animation: fadeIn 2s ease-in;
-        }
+  .hero-subtitle {
+    font-size: clamp(18px, 3vw, 20px);
+    max-width: 520px;
+    margin: 0 auto;
+    color: rgba(233, 243, 255, 0.85);
+  }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+  .hero-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #ffba08;
+    color: #0b1e33;
+    box-shadow: 0 16px 32px rgba(255, 186, 8, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
 
-        /* 🟡 Buttons */
-        a {
-            display: inline-block;
-            text-decoration: none;
-            background: #ffba08;
-            color: #000;
-            font-weight: bold;
-            padding: 14px 30px;
-            border-radius: 50px;
-            margin: 10px;
-            box-shadow: 0 0 15px rgba(255,186,8,0.6);
-            transition: all 0.3s ease, box-shadow 0.2s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
+  .hero-actions a:hover,
+  .hero-actions a:focus-visible {
+    transform: translateY(-2px);
+    background: #ffd25a;
+    box-shadow: 0 22px 40px rgba(255, 186, 8, 0.5);
+  }
 
-        /* 🌟 Light streak hover */
-        a::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.6s ease;
-        }
+  .hero-actions a.secondary {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: none;
+  }
 
-        a:hover::before {
-            left: 120%;
-        }
+  .hero-actions a.secondary:hover,
+  .hero-actions a.secondary:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+  }
 
-        a:hover {
-            background: #f1a500;
-            box-shadow: 0 0 20px rgba(255, 186, 8, 0.9), 0 0 40px rgba(255, 186, 8, 0.6);
-            transform: translateY(-3px);
-        }
+  @media (max-width: 640px) {
+    .home-hero {
+      padding: 48px 20px;
+      border-radius: 24px;
+    }
+    .hero-actions a {
+      width: 100%;
+    }
+  }
+</style>
 
-        /* ⚡ Pulse flash when clicked */
-        a:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
-            background: #ffe45e;
-        }
-
-        footer {
-            position: absolute;
-            bottom: 20px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            animation: fadeIn 2s ease-in;
-        }
-
-        /* ✨ Entry Animation Wrapper */
-        .content {
-            text-align: center;
-            z-index: 2;
-            animation: fadeIn 1.5s ease-in;
-        }
-
-        /* 🌈 Ambient glow overlay */
-        .glow {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 70%);
-            animation: glowShift 5s ease-in-out infinite alternate;
-            z-index: 1;
-        }
-
-        @keyframes glowShift {
-            0% { opacity: 0.4; }
-            100% { opacity: 0.8; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="glow"></div>
-
-    <div class="content">
-        <div class="car-icon">🚗</div>
-        <h1>Welcome, {{ username }} 👋</h1>
-        <p>You are now logged in to <strong>Drive Car Rentals</strong>.</p>
-
-        <div>
-            <a href="/gallery">View Cars</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
-
-    <footer>© 2025 Drive Car Rental | All rights reserved</footer>
-
-</body>
-</html>
+<section class="home-hero">
+  <svg class="hero-icon" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drive Car Rental logo">
+    <defs>
+      <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0b1e33"/>
+        <stop offset="100%" stop-color="#1c7293"/>
+      </linearGradient>
+    </defs>
+    <path d="M12 36a8 8 0 0 1 7-7.94l16.6-1.13a6 6 0 0 0 4.87-3.26l5-9.91A12 12 0 0 1 56.49 8h20.74a12 12 0 0 1 9.33 4.48l11.41 14.13A16 16 0 0 1 102 36v12H12z" fill="url(#bodyGradient)"/>
+    <rect x="20" y="30" width="72" height="16" rx="8" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="32" cy="52" r="9" fill="#0b1e33" stroke="#ffba08" stroke-width="3"/>
+    <circle cx="88" cy="52" r="9" fill="#0b1e33" stroke="#ffba08" stroke-width="3"/>
+    <rect x="54" y="18" width="20" height="10" rx="3" fill="#e6f4ff" opacity="0.75"/>
+  </svg>
+  <h1 class="hero-title">Welcome{{ ', ' + current_username if current_username else '' }}</h1>
+  <p class="hero-subtitle">You are logged in to Drive Car Rental. Start a new journey or keep track of your existing reservations.</p>
+  <div class="hero-actions">
+    <a href="{{ url_for('gallery') }}">View Cars</a>
+    <a class="secondary" href="{{ url_for('history') }}">Booking History</a>
+  </div>
+</section>
+{% endblock %}

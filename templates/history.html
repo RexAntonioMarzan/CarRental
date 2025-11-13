@@ -1,203 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Booking History - DriveEase</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa, #fef9e7);
-            margin: 0;
-            padding: 0;
-            color: #222;
-        }
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
 
-        header {
-            background: #1c7293;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
+{% block content %}
+<div>
+  <h1>Booking History</h1>
+  <p>Track your upcoming and past reservations. You can cancel an active booking with a single click.</p>
+</div>
 
-        h1 {
-            text-align: center;
-            color: #0b132b;
-            margin-top: 30px;
-            font-size: 32px;
-            animation: fadeDown 0.8s ease-out;
-        }
-
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        table {
-            width: 85%;
-            margin: 30px auto;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            animation: fadeUp 1s ease-out;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: center;
-        }
-
-        th {
-            background: #1c7293;
-            color: white;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        tr:hover {
-            background-color: #eaf4fc;
-            transition: background 0.3s ease;
-        }
-
-        td {
-            color: #333;
-            font-size: 15px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .cancel {
-            background: linear-gradient(135deg, #ff4d4d, #c81e1e);
-            color: white;
-        }
-
-        .cancel:hover {
-            background: linear-gradient(135deg, #ff6b6b, #e63946);
-            transform: scale(1.05);
-            box-shadow: 0 2px 6px rgba(255,0,0,0.3);
-        }
-
-        .no-bookings {
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-            margin-top: 60px;
-            animation: fadeIn 1s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .no-bookings a {
-            color: #1c7293;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .no-bookings a:hover {
-            text-decoration: underline;
-        }
-
-        nav {
-            text-align: center;
-            background: #16324f;
-            padding: 15px 0;
-            margin-top: 40px;
-            box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 18px;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #ffba08;
-        }
-
-        footer {
-            background: #1c7293;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 14px;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                width: 95%;
-                font-size: 14px;
-            }
-            th, td {
-                padding: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header>🚗 Drive Car Rental</header>
-
-    <h1>📜 Booking History</h1>
-
-    {% if bookings %}
+{% if bookings %}
+  <div style="margin-top: 24px; overflow-x: auto;">
     <table>
+      <thead>
         <tr>
-            <th>Car Name</th>
-            <th>Type</th>
-            <th>Days</th>
-            <th>Total Price</th>
-            <th>Action</th>
+          <th scope="col">Car</th>
+          <th scope="col">Type</th>
+          <th scope="col">Days</th>
+          <th scope="col">Total</th>
+          <th scope="col">Action</th>
         </tr>
+      </thead>
+      <tbody>
         {% for booking in bookings %}
-        <tr>
-            <td>{{ booking[1] }}</td>
-            <td>{{ booking[2] }}</td>
-            <td>{{ booking[3] }}</td>
-            <td>₱{{ booking[4] }}</td>
-            <td><a href="/cancel/{{ booking[0] }}" class="btn cancel">Cancel</a></td>
-        </tr>
+          <tr>
+            <td>{{ booking['car_name'] }}</td>
+            <td>{{ booking['car_type'] }}</td>
+            <td>{{ booking['days'] }}</td>
+            <td>₱{{ '{:,.2f}'.format(booking['total_price']) }}</td>
+            <td>
+              <form method="post" action="{{ url_for('cancel_booking', booking_id=booking['id']) }}">
+                <button class="btn danger" type="submit">Cancel booking</button>
+              </form>
+            </td>
+          </tr>
         {% endfor %}
+      </tbody>
     </table>
-    {% else %}
-    <p class="no-bookings">No bookings yet. <a href="/gallery">Book one now!</a></p>
-    {% endif %}
-
-    <nav>
-        <a href="/">🏠 Home</a>
-        <a href="/gallery">🏎️ View Cars</a>
-        <a href="/history">📜 Booking History</a>
-        <a href="/logout">🚪 Logout</a>
-    </nav>
-
-    <footer>© 2025 Drive Car Rental. All Rights Reserved.</footer>
-
-</body>
-</html>
+  </div>
+{% else %}
+  <div class="empty-state" style="margin-top: 32px;">
+    <h2>No bookings yet</h2>
+    <p>Browse the fleet to start a new reservation.</p>
+    <a class="btn" href="{{ url_for('gallery') }}">Browse cars</a>
+  </div>
+{% endif %}
+{% endblock %}

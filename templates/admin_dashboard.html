@@ -1,0 +1,65 @@
+{% extends "admin_base.html" %}
+{% block admin_title %}Admin Dashboard{% endblock %}
+
+{% block admin_content %}
+<div style="display: flex; flex-direction: column; gap: 32px;">
+  <section>
+    <h1>Admin Overview</h1>
+    <p>Monitor fleet inventory, track reservations, and keep tabs on rental revenue.</p>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 24px;">
+      <article class="card">
+        <h2 style="margin: 0; font-size: 18px;">Cars in fleet</h2>
+        <p style="font-size: 32px; font-weight: 700; color: var(--brand-primary); margin: 8px 0 0;">{{ stats.car_count }}</p>
+      </article>
+      <article class="card">
+        <h2 style="margin: 0; font-size: 18px;">Total bookings</h2>
+        <p style="font-size: 32px; font-weight: 700; color: var(--brand-primary); margin: 8px 0 0;">{{ stats.booking_count }}</p>
+      </article>
+      <article class="card">
+        <h2 style="margin: 0; font-size: 18px;">Lifetime revenue</h2>
+        <p style="font-size: 32px; font-weight: 700; color: var(--brand-primary); margin: 8px 0 0;">₱{{ '{:,.2f}'.format(stats.revenue) }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px;">
+      <h2 style="margin: 0;">Latest bookings</h2>
+      <a class="btn secondary" href="{{ url_for('admin_bookings') }}">View all bookings</a>
+    </div>
+    {% if recent_bookings %}
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Booking ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Car</th>
+              <th scope="col">Days</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in recent_bookings %}
+              <tr>
+                <td>#{{ booking['id'] }}</td>
+                <td>{{ booking['username'] }}</td>
+                <td>{{ booking['car_name'] }}</td>
+                <td>{{ booking['days'] }}</td>
+                <td>₱{{ '{:,.2f}'.format(booking['total_price']) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h2>No bookings yet</h2>
+        <p>Bookings will appear here as soon as customers reserve vehicles.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+

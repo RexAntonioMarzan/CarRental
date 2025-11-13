@@ -1,0 +1,60 @@
+{% extends "admin_base.html" %}
+{% block admin_title %}Manage Cars{% endblock %}
+
+{% block admin_content %}
+<section style="display: flex; flex-direction: column; gap: 24px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+    <div>
+      <h1>Fleet Management</h1>
+      <p>Keep your vehicle catalog up to date. Add new cars, adjust pricing, or remove a listing at any time.</p>
+    </div>
+    <a class="btn" href="{{ url_for('admin_add_car') }}">Add car</a>
+  </div>
+
+  {% if cars %}
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Car</th>
+            <th scope="col">Type</th>
+            <th scope="col">Price / day</th>
+            <th scope="col">Image</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for car in cars %}
+            <tr>
+              <td>{{ car['name'] }}</td>
+              <td>{{ car['car_type'] }}</td>
+              <td>₱{{ '{:,.2f}'.format(car['price_per_day']) }}</td>
+              <td>
+                {% if car['image_url'] %}
+                  <img src="{{ car['image_url'] }}" alt="{{ car['name'] }}" style="width: 72px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+                {% else %}
+                  <span style="color: var(--text-muted);">No image</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="form-actions">
+                  <a class="btn secondary" href="{{ url_for('admin_edit_car', car_id=car['id']) }}">Edit</a>
+                  <form method="post" action="{{ url_for('admin_delete_car', car_id=car['id']) }}" onsubmit="return confirm('Delete {{ car['name'] }} from the fleet?');">
+                    <button class="btn danger" type="submit">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No vehicles listed</h2>
+      <p>Use the Add car button to start building your catalog.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+
